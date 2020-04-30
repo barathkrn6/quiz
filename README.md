@@ -12,11 +12,11 @@ Clone the spring boot application and run the below commands (Run these commands
 
 Step 1 : Build the application to generate the jar file
 	
-	gradle build
+	mvn clean install
 
 Step 2 : Create a docker Image for spring boot application
 	
-	docker build . -t takeaway-spring-boot
+	docker build . -t quiz
 
 Step 3 : Run the spring boot application by linked database docker
 	
