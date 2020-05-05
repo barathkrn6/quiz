@@ -25,3 +25,7 @@ Step 3 : Run the spring boot application by linked database docker
 # Swagger URL
 
 	http://{host_name/ip_addr}:8080/swagger-ui.html
+
+# Health Check URL
+
+	http://{host_name/ip_addr}:8080/health-check
