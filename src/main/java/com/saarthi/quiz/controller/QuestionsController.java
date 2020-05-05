@@ -84,4 +84,11 @@ public class QuestionsController {
         logger.info("Request :: {}", requestBody);
         return requestBody;
     }
+
+    @GetMapping(value = "/api/send_quiz/{quiz_id}")
+    public Map<String, Object> sendQuiz(@PathVariable("quiz_id") Integer quizId,
+                                        HttpServletResponse response) {
+        logger.info("sendQuiz at :: " + questionsService.getTime());
+        return questionsService.sendQuiz(quizId, response);
+    }
 }

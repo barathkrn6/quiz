@@ -8,9 +8,16 @@ import com.saarthi.quiz.service.QuizService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletResponse;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -28,6 +35,12 @@ public class QuestionsServiceImpl implements QuestionsService {
 
     @Autowired
     private QuizService quizService;
+
+    @Value("${bot.chat.id}")
+    private String chatId;
+
+    @Value("${bot.token.value}")
+    private String botToken;
 
     /***
      *
@@ -104,15 +117,51 @@ public class QuestionsServiceImpl implements QuestionsService {
     public Map<String, Object> getQuestionsByQuizId(Integer quizId, HttpServletResponse response) {
         Map<String, Object> data = null;
         try {
-            Map<String, Object> quizData = quizService.getQuizById(quizId, response);
-            if (quizData.isEmpty()) {
-                return quizData;
+            data = getQuestions(quizId, response);
+        } catch (Exception e) {
+            logger.error("error in getQuestionsByQuizId :: ", e);
+            setError(response, data, e);
+        }
+        return data;
+    }
+
+    public Map<String, Object> getQuestions(Integer quizId, HttpServletResponse response) {
+        Map<String, Object> quizData = quizService.getQuizById(quizId, response);
+        if (quizData.isEmpty()) {
+            return quizData;
+        } else {
+            List<Questions> dbData = questionsRepository.findAllByQuizId(quizId);
+            Map<String, Object> data = new LinkedHashMap<>();
+            data.put("name", quizData.get("name"));
+            data.put("description", quizData.get("description"));
+            data.put("questions", dbData);
+            return data;
+        }
+    }
+
+    @Override
+    public Map<String, Object> sendQuiz(Integer quizId, HttpServletResponse response) {
+        Map<String, Object> data = null;
+        try {
+            data = getQuestions(quizId, response);
+            if (data != null && !data.isEmpty()) {
+                List<Questions> dbQuestions = (List<Questions>) data.get("questions");
+
+                for (Questions dbq : dbQuestions) {
+                    Map<String, Object> postObject = new LinkedHashMap<>();
+
+                    postObject.put("chat_id", chatId);
+                    postObject.put("question", dbq.getName());
+                    postObject.put("options", Arrays.asList(dbq.getOptions().split(",")));
+                    postObject.put("is_anonymous", false);
+                    postObject.put("type", "quiz");
+                    postObject.put("correct_option_id", dbq.getCorrectOption());
+
+                    makePostCall(postObject);
+                    Thread.sleep(2000);
+                }
             } else {
-                List<Questions> dbData = questionsRepository.findAllByQuizId(quizId);
                 data = new LinkedHashMap<>();
-                data.put("name", quizData.get("name"));
-                data.put("description", quizData.get("description"));
-                data.put("questions", dbData);
             }
         } catch (Exception e) {
             logger.error("error in getQuestionsByQuizId :: ", e);
@@ -121,6 +170,21 @@ public class QuestionsServiceImpl implements QuestionsService {
         return data;
     }
 
+    public void makePostCall(Map<String, Object> postObject) throws Exception {
+        logger.info("Request :: {}", postObject);
+        RestTemplate restTemplate = new RestTemplate();
+        final String baseUrl = "https://api.telegram.org/bot" + botToken + "/sendPoll";
+        logger.info("baseUrl :: {}", baseUrl);
+        URI uri = new URI(baseUrl);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        ObjectMapper mapperObj = new ObjectMapper();
+        String jsonReq = mapperObj.writeValueAsString(postObject);
+        HttpEntity<String> request = new HttpEntity<String>(jsonReq, headers);
+
+        ResponseEntity<String> responseEntityStr = restTemplate.postForEntity(uri, request, String.class);
+        logger.info("Posted question response :: {}", responseEntityStr.getBody());
+    }
     /***
      *
      * @param response

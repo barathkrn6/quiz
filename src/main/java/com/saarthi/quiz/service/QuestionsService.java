@@ -17,4 +17,6 @@ public interface QuestionsService {
     Map<String, Object> createQuestion(Questions questions, HttpServletResponse response);
 
     Map<String, Object> getQuestionsByQuizId(Integer quizId, HttpServletResponse response);
+
+    Map<String, Object> sendQuiz(Integer quizId, HttpServletResponse response);
 }
