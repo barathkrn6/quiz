@@ -1,9 +1,7 @@
 package com.saarthi.quiz.controller;
 
 import com.saarthi.quiz.model.db.Questions;
-import com.saarthi.quiz.model.db.Quiz;
 import com.saarthi.quiz.service.QuestionsService;
-import com.saarthi.quiz.service.QuizService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,14 +71,16 @@ public class QuestionsController {
      *API to get all the Questions based on quiz ID
      */
     @GetMapping(value = "/api/quiz-questions/{quiz_id}")
-    public Map<String, Object> getQuestionsByQuizId(@PathVariable("quiz_id") Integer quizId, HttpServletResponse response) {
+    public Map<String, Object> getQuestionsByQuizId(@PathVariable("quiz_id") Integer quizId,
+                                                    HttpServletResponse response) {
         logger.info("getQuestionsByQuizId at :: " + questionsService.getTime());
         return questionsService.getQuestionsByQuizId(quizId, response);
     }
 
-    @PostMapping(value = "{telegram_token}/telegram_webhook")
-    public Map<String, Object> telegramWebhook(@PathVariable String telegramWebhook, @RequestBody Map<String,
-            Object> requestBody, HttpServletResponse response) {
+    @PostMapping(value = "/{telegram_token}/telegram_webhook")
+    public Map<String, Object> telegramWebhook(@PathVariable(("telegram_token")) String telegramWebhook,
+                                               @RequestBody Map<String, Object> requestBody,
+                                               HttpServletResponse response) {
         logger.info("Request :: {}", telegramWebhook);
         return requestBody;
     }
