@@ -77,4 +77,11 @@ public class QuestionsController {
         logger.info("getQuestionsByQuizId at :: " + questionsService.getTime());
         return questionsService.getQuestionsByQuizId(quizId, response);
     }
+
+    @PostMapping(value = "{telegram_token}/telegram_webhook")
+    public Map<String, Object> telegramWebhook(@PathVariable String telegramWebhook, @RequestBody Map<String,
+            Object> requestBody, HttpServletResponse response) {
+        logger.info("Request :: {}", telegramWebhook);
+        return requestBody;
+    }
 }
