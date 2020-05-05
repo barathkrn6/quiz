@@ -81,7 +81,7 @@ public class QuestionsController {
     public Map<String, Object> telegramWebhook(@PathVariable(("telegram_token")) String telegramWebhook,
                                                @RequestBody Map<String, Object> requestBody,
                                                HttpServletResponse response) {
-        logger.info("Request :: {}", telegramWebhook);
+        logger.info("Request :: {}", requestBody);
         return requestBody;
     }
 }
