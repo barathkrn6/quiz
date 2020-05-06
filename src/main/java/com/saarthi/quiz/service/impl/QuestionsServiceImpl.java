@@ -36,12 +36,6 @@ public class QuestionsServiceImpl implements QuestionsService {
     @Autowired
     private QuizService quizService;
 
-    @Value("${bot.chat.id}")
-    private String chatId;
-
-    @Value("${bot.token.value}")
-    private String botToken;
-
     /***
      *
      * @return
@@ -140,7 +134,8 @@ public class QuestionsServiceImpl implements QuestionsService {
     }
 
     @Override
-    public Map<String, Object> sendQuiz(Integer quizId, HttpServletResponse response) {
+    public Map<String, Object> sendQuiz(String chatId, String telegramToken, Integer quizId,
+                                        HttpServletResponse response) {
         Map<String, Object> data = null;
         try {
             data = getQuestions(quizId, response);
@@ -158,7 +153,7 @@ public class QuestionsServiceImpl implements QuestionsService {
                     postObject.put("correct_option_id", dbq.getCorrectOption());
                     postObject.put("open_period", 10);
 
-                    makePostCall(postObject);
+                    makePostCall(postObject, telegramToken);
                     Thread.sleep(120000);
                 }
             } else {
@@ -171,10 +166,10 @@ public class QuestionsServiceImpl implements QuestionsService {
         return data;
     }
 
-    public void makePostCall(Map<String, Object> postObject) throws Exception {
+    public void makePostCall(Map<String, Object> postObject, String telegramToken) throws Exception {
         logger.info("Request :: {}", postObject);
         RestTemplate restTemplate = new RestTemplate();
-        final String baseUrl = "https://api.telegram.org/bot" + botToken + "/sendPoll";
+        final String baseUrl = "https://api.telegram.org/bot" + telegramToken + "/sendPoll";
         logger.info("baseUrl :: {}", baseUrl);
         URI uri = new URI(baseUrl);
         HttpHeaders headers = new HttpHeaders();

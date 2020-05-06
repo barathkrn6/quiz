@@ -18,5 +18,5 @@ public interface QuestionsService {
 
     Map<String, Object> getQuestionsByQuizId(Integer quizId, HttpServletResponse response);
 
-    Map<String, Object> sendQuiz(Integer quizId, HttpServletResponse response);
+    Map<String, Object> sendQuiz(String chatId, String telegramToken, Integer quizId, HttpServletResponse response);
 }

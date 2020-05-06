@@ -85,10 +85,12 @@ public class QuestionsController {
         return requestBody;
     }
 
-    @GetMapping(value = "/api/send_quiz/{quiz_id}")
-    public Map<String, Object> sendQuiz(@PathVariable("quiz_id") Integer quizId,
+    @GetMapping(value = "/api/send_quiz/{chat_id}/{telegram_token}/{quiz_id}")
+    public Map<String, Object> sendQuiz(@PathVariable("chat_id") String chatId,
+                                        @PathVariable("telegram_token") String telegramToken,
+                                        @PathVariable("quiz_id") Integer quizId,
                                         HttpServletResponse response) {
         logger.info("sendQuiz at :: " + questionsService.getTime());
-        return questionsService.sendQuiz(quizId, response);
+        return questionsService.sendQuiz(chatId, telegramToken, quizId, response);
     }
 }
