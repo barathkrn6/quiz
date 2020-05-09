@@ -151,10 +151,11 @@ public class QuestionsServiceImpl implements QuestionsService {
                     postObject.put("is_anonymous", false);
                     postObject.put("type", "quiz");
                     postObject.put("correct_option_id", dbq.getCorrectOption());
-                    postObject.put("open_period", 10);
+                    // postObject.put("open_period", 10);
 
                     makePostCall(postObject, telegramToken);
-                    Thread.sleep(120000);
+                    // Thread.sleep(120000);
+                    Thread.sleep(10000);
                 }
             } else {
                 data = new LinkedHashMap<>();
