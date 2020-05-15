@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 
 @Entity
-@Table(name = "questions")
+@Table(name = "questions_telegram")
 public class Questions implements Serializable {
     private static final long serialVersionUID = -3009157732242241605L;
     @Id

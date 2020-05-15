@@ -2,13 +2,16 @@ package com.saarthi.quiz.controller;
 
 import com.saarthi.quiz.model.db.Questions;
 import com.saarthi.quiz.service.QuestionsService;
+import com.saarthi.quiz.service.impl.AsyncServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 /*
  * Created by Barath.
@@ -22,6 +25,8 @@ public class QuestionsController {
     @Autowired
     private QuestionsService questionsService;
 
+    @Autowired
+    private AsyncServiceImpl asyncServiceImpl;
     /***
      *
      * @return
@@ -86,11 +91,17 @@ public class QuestionsController {
     }
 
     @GetMapping(value = "/api/send_quiz/{chat_id}/{telegram_token}/{quiz_id}")
-    public Map<String, Object> sendQuiz(@PathVariable("chat_id") String chatId,
+    public Map<String, Object> sendQuiz(@PathVariable("chat_id") String chatIds,
                                         @PathVariable("telegram_token") String telegramToken,
                                         @PathVariable("quiz_id") Integer quizId,
-                                        HttpServletResponse response) {
+                                        HttpServletResponse response) throws Exception {
         logger.info("sendQuiz at :: " + questionsService.getTime());
-        return questionsService.sendQuiz(chatId, telegramToken, quizId, response);
+        String[] splitChat = chatIds.split("~");
+        for (String chatId : splitChat) {
+            asyncServiceImpl.sendQuiz(chatId, telegramToken, quizId, response);
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("message", "Success");
+        return map;
     }
 }

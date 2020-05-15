@@ -136,13 +136,17 @@ public class QuestionsServiceImpl implements QuestionsService {
     @Override
     public Map<String, Object> sendQuiz(String chatId, String telegramToken, Integer quizId,
                                         HttpServletResponse response) {
+        logger.info("Inside sendQuiz");
         Map<String, Object> data = null;
         try {
             data = getQuestions(quizId, response);
             if (data != null && !data.isEmpty()) {
+                logger.info("Data :: {}", data);
                 List<Questions> dbQuestions = (List<Questions>) data.get("questions");
 
+                int i = 0;
                 for (Questions dbq : dbQuestions) {
+                    i++;
                     Map<String, Object> postObject = new LinkedHashMap<>();
 
                     postObject.put("chat_id", chatId);
@@ -155,7 +159,11 @@ public class QuestionsServiceImpl implements QuestionsService {
 
                     makePostCall(postObject, telegramToken);
                     // Thread.sleep(120000);
-                    Thread.sleep(10000);
+                    if (i == 10) {
+                        break;
+                    }
+                    Thread.sleep(60000);
+                    // Thread.sleep(1000);
                 }
             } else {
                 data = new LinkedHashMap<>();

@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +19,8 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.util.concurrent.Executor;
+
 /*
  * Created by Barath.
  */
@@ -25,6 +29,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @EnableAutoConfiguration
 @ComponentScan
+@EnableAsync
 public class QuizApplication {
 
 	private static final Logger logger = LoggerFactory.getLogger(QuizApplication.class);
@@ -44,5 +49,21 @@ public class QuizApplication {
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder().title("quiz-api-services").description("quiz-api-services").contact("Barath K")
 				.license("Apache License Version 2.0").version("1.0.0").build();
+	}
+
+	/**
+	 * Enabling Executor
+	 *
+	 * @return
+	 */
+	@Bean(name = "threadPoolTaskExecutor")
+	public Executor taskExecutor() {
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		executor.setCorePoolSize(10);
+		executor.setMaxPoolSize(10);
+		executor.setQueueCapacity(500);
+		executor.setThreadNamePrefix("Quiz-");
+		executor.initialize();
+		return executor;
 	}
 }
