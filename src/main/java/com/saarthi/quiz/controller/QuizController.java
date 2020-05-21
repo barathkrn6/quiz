@@ -1,6 +1,7 @@
 package com.saarthi.quiz.controller;
 
 import com.saarthi.quiz.model.db.Quiz;
+import com.saarthi.quiz.model.db.QuizSchedule;
 import com.saarthi.quiz.service.QuizService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,5 +65,12 @@ public class QuizController {
     public Map<String, Object> getQuizById(@PathVariable("quiz_id") Integer quizId, HttpServletResponse response) {
         logger.info("getQuizById at :: " + quizService.getTime());
         return quizService.getQuizById(quizId, response);
+    }
+
+    @PostMapping(value = "/create_quiz_schedule")
+    public Map<String, Object> createQuizSchedule(@RequestBody QuizSchedule quizSchedule,
+                                                  HttpServletResponse response) {
+        logger.info("createQuizSchedule at :: " + quizService.getTime());
+        return quizService.createQuizSchedule(quizSchedule, response);
     }
 }

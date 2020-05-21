@@ -2,7 +2,9 @@ package com.saarthi.quiz.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.saarthi.quiz.model.db.Quiz;
+import com.saarthi.quiz.model.db.QuizSchedule;
 import com.saarthi.quiz.repo.QuizRepository;
+import com.saarthi.quiz.repo.QuizScheduleRepository;
 import com.saarthi.quiz.service.QuizService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +27,8 @@ public class QuizServiceImpl implements QuizService {
     @Autowired
     private QuizRepository quizRepository;
 
+    @Autowired
+    private QuizScheduleRepository quizScheduleRepository;
     @Override
     public String getTime() {
         Calendar cal = Calendar.getInstance();
@@ -91,6 +95,21 @@ public class QuizServiceImpl implements QuizService {
             setError(response, quizMap, e);
         }
         return quizMap;
+    }
+
+    @Override
+    public Map<String, Object> createQuizSchedule(QuizSchedule quizSchedule, HttpServletResponse response) {
+        Map<String, Object> quizScheduleMap = null;
+        try {
+            QuizSchedule savedQuizSchedule = quizScheduleRepository.save(quizSchedule);
+            ObjectMapper oMapper = new ObjectMapper();
+            quizScheduleMap = oMapper.convertValue(savedQuizSchedule, Map.class);
+            response.setStatus(201);
+        } catch (Exception e) {
+            logger.error("error in createQuizSchedule :: ", e);
+            setError(response, quizScheduleMap, e);
+        }
+        return quizScheduleMap;
     }
 
     /***
