@@ -16,6 +16,10 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 @Component
 public class Scheduler {
@@ -34,16 +38,26 @@ public class Scheduler {
     @Value("${morning.ten.am.quiz_id}")
     private Integer secheduledQuizId;
 
-    @Scheduled(cron = "${morning.ten.am.quiz:0 0 10 * * ?}")
+    @Scheduled(cron = "${morning.ten.am.quiz:0 40 17 * * ?}")
     @Transactional
     public void sendQuiz() {
         logger.info("Scheduler triggred");
 
-        QuizSchedule quizScheduled = quizScheduleRepository.getOne(secheduledQuizId);
+        /*QuizSchedule quizScheduled = quizScheduleRepository.getOne(secheduledQuizId);
         logger.info("sendQuiz at :: " + questionsService.getTime());
         String[] splitChat = quizScheduled.getChatId().split("~");
         for (String chatId : splitChat) {
             asyncServiceImpl.sendQuiz(chatId, quizScheduled.getToken(), quizScheduled.getQuizId(), null);
-        }
+        }*/
+    }
+
+    @Scheduled(fixedRate = 600000)
+    public void healthCheck() {
+        logger.info("Scheduler healthCheck");
+        Date localTime = new Date();
+        DateFormat converter = new SimpleDateFormat("dd/MM/yyyy:HH:mm:ss");
+        converter.setTimeZone(TimeZone.getTimeZone("GMT"));
+        logger.info("local time : " + localTime);;
+        logger.info("time in GMT : " + converter.format(localTime));
     }
 }
