@@ -38,17 +38,17 @@ public class Scheduler {
     @Value("${morning.ten.am.quiz_id}")
     private Integer secheduledQuizId;
 
-    @Scheduled(cron = "${morning.ten.am.quiz:0 40 17 * * ?}")
+    @Scheduled(cron = "${morning.ten.am.quiz:0 50 17 * * ?}")
     @Transactional
     public void sendQuiz() {
         logger.info("Scheduler triggred");
 
-        /*QuizSchedule quizScheduled = quizScheduleRepository.getOne(secheduledQuizId);
+        QuizSchedule quizScheduled = quizScheduleRepository.getOne(secheduledQuizId);
         logger.info("sendQuiz at :: " + questionsService.getTime());
         String[] splitChat = quizScheduled.getChatId().split("~");
         for (String chatId : splitChat) {
             asyncServiceImpl.sendQuiz(chatId, quizScheduled.getToken(), quizScheduled.getQuizId(), null);
-        }*/
+        }
     }
 
     @Scheduled(fixedRate = 600000)
