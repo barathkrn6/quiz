@@ -20,17 +20,22 @@ public class TestClass {
         map.put("b", 1);
         map.put("c", 2);
         map.put("d", 3);
-        readFile(new File("/Users/barath.karunakaran/Downloads/Mix_30_que.csv"));
+        // readFile(new File("/Users/barath.karunakaran/Downloads/Mix_30_que.csv"));
+        readFile(new File("/Users/barath.karunakaran/Documents/Saarathi/questions/100_que.csv"));
     }
 
     public static void readFile(File file) throws Exception {
-        CSVReader reader = new CSVReader(new FileReader("/Users/barath.karunakaran/Downloads/Mix_30_que.csv"));
+        CSVReader reader = new CSVReader(new FileReader("/Users/barath.karunakaran/Documents/Saarathi/questions/10" +
+                ".csv"));
         String [] splitLine;
         while ((splitLine = reader.readNext()) != null) {
-            String name = splitLine[1].replace("\"", "").trim();
-            String options = splitLine[2].replace("\"", "").trim() + "," + splitLine[3].replace("\"", "").trim()
-                    + "," + splitLine[4].replace("\"", "").trim() + "," + splitLine[5].replace("\"", "").trim();
-            Integer option = map.get(splitLine[7].replace("\"", "").trim().toLowerCase());
+            // System.out.println();
+            String name = splitLine[1].replaceAll("\"", "").trim();
+            String options = splitLine[2].replaceAll("\"", "").replaceAll(",", " ").trim() + "," +
+                            splitLine[3].replaceAll("\"", "").replaceAll(",", " ").trim() + "," +
+                            splitLine[4].replaceAll("\"", "").replaceAll(",", " ").trim() + "," +
+                            splitLine[5].replaceAll("\"", "").replaceAll(",", " ").trim();
+            Integer option = map.get(splitLine[7].replaceAll("\"", "").trim().toLowerCase());
 
             if (option != null) {
                 JSONObject obj = new JSONObject();
@@ -38,12 +43,12 @@ public class TestClass {
                 obj.put("name", name);
                 obj.put("options", options);
                 obj.put("points", 10);
-                obj.put("quiz_id", 1);
+                obj.put("quiz_id", 136);
 
-                System.out.println(obj);
+                // System.out.println(obj);
 
-                // URL url = new URL("https://barath-quiz-telegram.herokuapp.com/api/questions/");
-                URL url = new URL("http://localhost:8080/api/questions/");
+                URL url = new URL("https://barath-quiz-telegram.herokuapp.com/api/questions/");
+                // URL url = new URL("http://localhost:8080/api/questions/");
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
                 con.setRequestMethod("POST");
                 con.setRequestProperty("Content-Type", "application/json; utf-8");
@@ -62,6 +67,11 @@ public class TestClass {
 
                 int responseCode = con.getResponseCode();
                 System.out.println("POST Response Code :: " + responseCode);
+
+                // System.out.println(obj);
+            } else {
+                // System.out.println(splitLine[0]);
+                // System.out.println(splitLine[7].trim());
             }
         }
     }

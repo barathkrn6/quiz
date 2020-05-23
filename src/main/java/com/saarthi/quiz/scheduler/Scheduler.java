@@ -38,7 +38,7 @@ public class Scheduler {
     @Value("${morning.ten.am.quiz_id}")
     private Integer secheduledQuizId;
 
-    @Scheduled(cron = "${morning.ten.am.quiz:0 50 17 * * ?}")
+    @Scheduled(cron = "${morning.ten.am.quiz:0 0 14 * * ?}")
     @Transactional
     public void sendQuiz() {
         logger.info("Scheduler triggred");
