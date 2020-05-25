@@ -1,8 +1,10 @@
 package com.saarthi.quiz.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.saarthi.quiz.model.db.PollUserData;
 import com.saarthi.quiz.model.db.Questions;
 import com.saarthi.quiz.model.db.TelegramQuestionMapping;
+import com.saarthi.quiz.repo.PollUserDataRepository;
 import com.saarthi.quiz.repo.QuestionsRepository;
 import com.saarthi.quiz.repo.TelegramQuestionMappingRepository;
 import com.saarthi.quiz.service.QuestionsService;
@@ -42,6 +44,9 @@ public class QuestionsServiceImpl implements QuestionsService {
 
     @Autowired
     private TelegramQuestionMappingRepository telegramQuestionMappingRepository;
+
+    @Autowired
+    private PollUserDataRepository pollUserDataRepository;
 
     /***
      *
@@ -185,8 +190,32 @@ public class QuestionsServiceImpl implements QuestionsService {
     @Override
     public Map<String, Object> telegramWebhook(String telegramToken, Map<String, Object> requestBody,
                                                HttpServletResponse response) {
-        if (requestBody.get("poll_answer") != null) {
-            logger.info("Request :: {}", requestBody);
+        try {
+            if (requestBody.get("poll_answer") != null) {
+                logger.info("Request telegramWebhook :: {}", requestBody);
+
+                Map<String, Object> pollAnswer = (Map<String, Object>) requestBody.get("poll_answer");
+                String pollId = pollAnswer.get("poll_id").toString();
+
+                Map<String, Object> pollUser = (Map<String, Object>) pollAnswer.get("user");
+                String userId = pollUser.get("id").toString();
+                String firstName = pollUser.get("first_name").toString();
+                String lastName = pollUser.get("last_name").toString();
+                Integer optionSelected = ((List<Integer>) pollAnswer.get("option_ids")).get(0);
+
+                PollUserData pollUserData = new PollUserData();
+                pollUserData.setPollId(pollId);
+                pollUserData.setUserId(userId);
+                pollUserData.setFirstName(firstName);
+                pollUserData.setLastName(lastName);
+                pollUserData.setOptionSelected(optionSelected);
+                pollUserData.setCreatedAt(LocalDateTime.now());
+                pollUserData.setUpdatedAt(LocalDateTime.now());
+
+                pollUserDataRepository.save(pollUserData);
+            }
+        } catch (Exception e) {
+            logger.error("error in telegramWebhook :: {}", e);
         }
         return null;
     }
