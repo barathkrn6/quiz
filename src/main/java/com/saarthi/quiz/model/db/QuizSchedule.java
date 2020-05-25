@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "quiz_schedule")
 public class QuizSchedule implements Serializable {
-    private static final long serialVersionUID = -3009157732242241606L;
+    private static final long serialVersionUID = -3009157732242241607L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

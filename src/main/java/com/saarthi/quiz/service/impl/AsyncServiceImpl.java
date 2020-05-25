@@ -25,4 +25,10 @@ public class AsyncServiceImpl {
         return CompletableFuture.completedFuture(questionsService.sendQuiz(chatId, telegramToken, quizId,
                 response));
     }
+
+    public CompletableFuture<Map<String, Object>> telegramWebhook(String telegramToken,
+                                                                  Map<String, Object> requestBody,
+                                                                  HttpServletResponse response) {
+        return CompletableFuture.completedFuture(questionsService.telegramWebhook(telegramToken, requestBody, response));
+    }
 }

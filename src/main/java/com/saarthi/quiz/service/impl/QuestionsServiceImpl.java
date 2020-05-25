@@ -2,9 +2,12 @@ package com.saarthi.quiz.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.saarthi.quiz.model.db.Questions;
+import com.saarthi.quiz.model.db.TelegramQuestionMapping;
 import com.saarthi.quiz.repo.QuestionsRepository;
+import com.saarthi.quiz.repo.TelegramQuestionMappingRepository;
 import com.saarthi.quiz.service.QuestionsService;
 import com.saarthi.quiz.service.QuizService;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /*
@@ -35,6 +39,9 @@ public class QuestionsServiceImpl implements QuestionsService {
 
     @Autowired
     private QuizService quizService;
+
+    @Autowired
+    private TelegramQuestionMappingRepository telegramQuestionMappingRepository;
 
     /***
      *
@@ -157,7 +164,7 @@ public class QuestionsServiceImpl implements QuestionsService {
                     postObject.put("correct_option_id", dbq.getCorrectOption());
                     // postObject.put("open_period", 10);
 
-                    makePostCall(postObject, telegramToken);
+                    makePostCall(postObject, telegramToken, dbq.getId(), quizId, chatId);
                     // Thread.sleep(120000);
                     if (i == 10) {
                         break;
@@ -175,11 +182,21 @@ public class QuestionsServiceImpl implements QuestionsService {
         return data;
     }
 
-    public void makePostCall(Map<String, Object> postObject, String telegramToken) throws Exception {
-        logger.info("Request :: {}", postObject);
+    @Override
+    public Map<String, Object> telegramWebhook(String telegramToken, Map<String, Object> requestBody,
+                                               HttpServletResponse response) {
+        if (requestBody.get("poll_answer") != null) {
+            logger.info("Request :: {}", requestBody);
+        }
+        return null;
+    }
+
+    public void makePostCall(Map<String, Object> postObject, String telegramToken, Integer questionId,
+                             Integer quizId, String chatId) throws Exception {
+        logger.info("Request makePostCall :: {}", postObject);
         RestTemplate restTemplate = new RestTemplate();
         final String baseUrl = "https://api.telegram.org/bot" + telegramToken + "/sendPoll";
-        logger.info("baseUrl :: {}", baseUrl);
+        logger.info("baseUrl makePostCall:: {}", baseUrl);
         URI uri = new URI(baseUrl);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -188,7 +205,26 @@ public class QuestionsServiceImpl implements QuestionsService {
         HttpEntity<String> request = new HttpEntity<String>(jsonReq, headers);
 
         ResponseEntity<String> responseEntityStr = restTemplate.postForEntity(uri, request, String.class);
-        logger.info("Posted question response :: {}", responseEntityStr.getBody());
+        logger.info("Posted question response makePostCall :: {}", responseEntityStr.getBody());
+
+        JSONObject obj = new JSONObject(responseEntityStr.getBody());
+        String pollId = obj.getJSONObject("result").getJSONObject("poll").get("id").toString();
+        updateTelegramQuestionMapping(pollId, questionId, quizId, chatId);
+    }
+
+    public void updateTelegramQuestionMapping(String pollId, Integer questionId, Integer quizId, String chatId) {
+        try {
+            TelegramQuestionMapping telegramQuestionMapping = new TelegramQuestionMapping();
+            telegramQuestionMapping.setTelegramPollId(pollId);
+            telegramQuestionMapping.setQuetionId(questionId);
+            telegramQuestionMapping.setQuizId(quizId);
+            telegramQuestionMapping.setChatId(chatId);
+            telegramQuestionMapping.setCreatedAt(LocalDateTime.now());
+            telegramQuestionMapping.setUpdatedAt(LocalDateTime.now());
+            telegramQuestionMappingRepository.save(telegramQuestionMapping);
+        } catch (Exception e) {
+            logger.error("error in updateTelegramQuestionMapping :: {}", e);
+        }
     }
     /***
      *

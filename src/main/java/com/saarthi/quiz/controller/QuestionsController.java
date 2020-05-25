@@ -83,11 +83,11 @@ public class QuestionsController {
     }
 
     @PostMapping(value = "/{telegram_token}/telegram_webhook")
-    public Map<String, Object> telegramWebhook(@PathVariable(("telegram_token")) String telegramWebhook,
+    public void telegramWebhook(@PathVariable(("telegram_token")) String telegramToken,
                                                @RequestBody Map<String, Object> requestBody,
                                                HttpServletResponse response) {
         logger.info("Request :: {}", requestBody);
-        return requestBody;
+        asyncServiceImpl.telegramWebhook(telegramToken, requestBody, response);
     }
 
     @GetMapping(value = "/api/send_quiz/{chat_id}/{telegram_token}/{quiz_id}")
