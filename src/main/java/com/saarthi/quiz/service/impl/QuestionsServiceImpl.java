@@ -158,24 +158,28 @@ public class QuestionsServiceImpl implements QuestionsService {
 
                 int i = 0;
                 for (Questions dbq : dbQuestions) {
-                    i++;
-                    Map<String, Object> postObject = new LinkedHashMap<>();
+                    try {
+                        i++;
+                        Map<String, Object> postObject = new LinkedHashMap<>();
 
-                    postObject.put("chat_id", chatId);
-                    postObject.put("question", dbq.getName());
-                    postObject.put("options", Arrays.asList(dbq.getOptions().split(",")));
-                    postObject.put("is_anonymous", false);
-                    postObject.put("type", "quiz");
-                    postObject.put("correct_option_id", dbq.getCorrectOption());
-                    // postObject.put("open_period", 10);
+                        postObject.put("chat_id", chatId);
+                        postObject.put("question", dbq.getName());
+                        postObject.put("options", Arrays.asList(dbq.getOptions().split(",")));
+                        postObject.put("is_anonymous", false);
+                        postObject.put("type", "quiz");
+                        postObject.put("correct_option_id", dbq.getCorrectOption());
+                        // postObject.put("open_period", 10);
 
-                    makePostCall(postObject, telegramToken, dbq.getId(), quizId, chatId);
-                    // Thread.sleep(120000);
-                    if (i == 10) {
-                        break;
+                        makePostCall(postObject, telegramToken, dbq.getId(), quizId, chatId);
+                        // Thread.sleep(120000);
+                        if (i == 10) {
+                            break;
+                        }
+                        // Thread.sleep(1000);
+                    } catch (Exception e) {
+                        logger.info("error in loop :: {}", e);
                     }
                     Thread.sleep(60000);
-                    // Thread.sleep(1000);
                 }
             } else {
                 data = new LinkedHashMap<>();
