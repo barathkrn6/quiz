@@ -35,7 +35,7 @@ public class Questions implements Serializable {
     private Integer points;
 
     @Column(name = "explanation")
-    private Integer explanation;
+    private String explanation;
 
     public Integer getId() {
         return id;
@@ -61,7 +61,7 @@ public class Questions implements Serializable {
         return points;
     }
 
-    public Integer getExplanation() {
+    public String getExplanation() {
         return explanation;
     }
 
@@ -89,7 +89,7 @@ public class Questions implements Serializable {
         this.points = points;
     }
 
-    public void setExplanation(Integer explanation) {
+    public void setExplanation(String explanation) {
         this.explanation = explanation;
     }
 }
