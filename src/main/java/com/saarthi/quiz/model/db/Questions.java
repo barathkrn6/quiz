@@ -34,6 +34,9 @@ public class Questions implements Serializable {
     @Column(name = "points")
     private Integer points;
 
+    @Column(name = "explanation")
+    private Integer explanation;
+
     public Integer getId() {
         return id;
     }
@@ -50,12 +53,16 @@ public class Questions implements Serializable {
         return correctOption;
     }
 
-    public Integer getQuiz() {
+    public Integer getQuizId() {
         return quizId;
     }
 
     public Integer getPoints() {
         return points;
+    }
+
+    public Integer getExplanation() {
+        return explanation;
     }
 
     public void setId(Integer id) {
@@ -74,11 +81,15 @@ public class Questions implements Serializable {
         this.correctOption = correctOption;
     }
 
-    public void setQuiz(Integer quizId) {
+    public void setQuizId(Integer quizId) {
         this.quizId = quizId;
     }
 
     public void setPoints(Integer points) {
         this.points = points;
+    }
+
+    public void setExplanation(Integer explanation) {
+        this.explanation = explanation;
     }
 }

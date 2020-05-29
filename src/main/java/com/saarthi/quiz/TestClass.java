@@ -25,7 +25,7 @@ public class TestClass {
     }
 
     public static void readFile(File file) throws Exception {
-        CSVReader reader = new CSVReader(new FileReader("/Users/barath.karunakaran/Documents/Saarathi/questions/10" +
+        CSVReader reader = new CSVReader(new FileReader("/Users/barath.karunakaran/Documents/Saarathi/questions/1" +
                 ".csv"));
         String [] splitLine;
         while ((splitLine = reader.readNext()) != null) {
@@ -35,6 +35,7 @@ public class TestClass {
                             splitLine[3].replaceAll("\"", "").replaceAll(",", " ").trim() + "," +
                             splitLine[4].replaceAll("\"", "").replaceAll(",", " ").trim() + "," +
                             splitLine[5].replaceAll("\"", "").replaceAll(",", " ").trim();
+            String explanation = splitLine[6].replaceAll("\"", "").trim();
             Integer option = map.get(splitLine[7].replaceAll("\"", "").trim().toLowerCase());
 
             if (option != null) {
@@ -43,7 +44,8 @@ public class TestClass {
                 obj.put("name", name);
                 obj.put("options", options);
                 obj.put("points", 10);
-                obj.put("quiz_id", 136);
+                obj.put("quiz_id", 37);
+                obj.put("explanation", explanation);
 
                 // System.out.println(obj);
 
