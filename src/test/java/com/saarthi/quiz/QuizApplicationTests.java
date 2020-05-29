@@ -89,7 +89,7 @@ class QuizApplicationTests {
 		questions.setName("question 1");
 		questions.setOptions("a,b,c,d");
 		questions.setCorrectOption(2);
-		questions.setQuiz(1);
+		questions.setQuizId(1);
 		questions.setPoints(10);
 		ObjectMapper oMapper = new ObjectMapper();
 		Map<String, Object> questionsMap = oMapper.convertValue(questions, Map.class);
