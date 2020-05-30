@@ -56,7 +56,7 @@ public class Scheduler {
 
     @Scheduled(cron = "${morning.ten.am.quiz.alert:0 45 13 * * ?}")
     @Transactional
-    public void sendAlert() {
+    public void sendAlert() throws Exception {
         logger.info("Scheduler triggred alert");
 
         QuizSchedule quizScheduled = quizScheduleRepository.getOne(secheduledQuizId);
