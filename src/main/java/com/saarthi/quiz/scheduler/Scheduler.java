@@ -54,6 +54,19 @@ public class Scheduler {
         }
     }
 
+    @Scheduled(cron = "${morning.ten.am.quiz.alert:0 45 13 * * ?}")
+    @Transactional
+    public void sendAlert() {
+        logger.info("Scheduler triggred alert");
+
+        QuizSchedule quizScheduled = quizScheduleRepository.getOne(secheduledQuizId);
+        logger.info("sendQuiz at :: " + questionsService.getTime());
+        String[] splitChat = quizScheduled.getChatId().split("~");
+        for (String chatId : splitChat) {
+            questionsService.sendQuizAlert(chatId, quizScheduled.getToken());
+        }
+    }
+
     @Scheduled(fixedRate = 600000)
     public void healthCheck() throws Exception {
         logger.info("Scheduler healthCheck");

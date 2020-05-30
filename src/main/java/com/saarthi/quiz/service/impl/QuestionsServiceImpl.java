@@ -224,6 +224,29 @@ public class QuestionsServiceImpl implements QuestionsService {
         return null;
     }
 
+    @Override
+    public void sendQuizAlert(String chatId, String telegramToken) throws Exception {
+        RestTemplate restTemplate = new RestTemplate();
+        final String baseUrl = "https://api.telegram.org/bot" + telegramToken + "/sendMessage";
+        logger.info("baseUrl sendQuizAlert :: {}", baseUrl);
+        URI uri = new URI(baseUrl);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        ObjectMapper mapperObj = new ObjectMapper();
+        Map<String, Object> postObject = new HashMap<>();
+        postObject.put("chat_id", chatId);
+        postObject.put("text", "!!AAJ KA CONTEST HOGA CURRENT AFFAIRS KA !!\n" +
+                "TIMING : 7.30PM\n" +
+                "SUBJECT : GENERAL KNOWLEDGE\n" +
+                "TOPIC : CURRENT AFFAIRS\n" +
+                "TEACHER: SAUMYA MAM");
+        String jsonReq = mapperObj.writeValueAsString(postObject);
+        HttpEntity<String> request = new HttpEntity<String>(jsonReq, headers);
+
+        ResponseEntity<String> responseEntityStr = restTemplate.postForEntity(uri, request, String.class);
+        logger.info("Posted alert response makePostCall :: {}", responseEntityStr.getBody());
+    }
+
     public void makePostCall(Map<String, Object> postObject, String telegramToken, Integer questionId,
                              Integer quizId, String chatId) throws Exception {
         logger.info("Request makePostCall :: {}", postObject);

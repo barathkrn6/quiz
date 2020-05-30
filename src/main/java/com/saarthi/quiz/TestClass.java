@@ -25,7 +25,7 @@ public class TestClass {
     }
 
     public static void readFile(File file) throws Exception {
-        CSVReader reader = new CSVReader(new FileReader("/Users/barath.karunakaran/Documents/Saarathi/questions/1" +
+        CSVReader reader = new CSVReader(new FileReader("/Users/barath.karunakaran/Documents/Saarathi/questions/10" +
                 ".csv"));
         String [] splitLine;
         while ((splitLine = reader.readNext()) != null) {
@@ -44,7 +44,7 @@ public class TestClass {
                 obj.put("name", name);
                 obj.put("options", options);
                 obj.put("points", 10);
-                obj.put("quiz_id", 37);
+                obj.put("quiz_id", 136);
                 obj.put("explanation", explanation);
 
                 // System.out.println(obj);
