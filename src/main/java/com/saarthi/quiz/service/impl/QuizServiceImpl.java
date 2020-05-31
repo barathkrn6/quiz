@@ -229,7 +229,7 @@ public class QuizServiceImpl implements QuizService {
     }
 
     public void addAnswer(Font headingFont, String options, Font font, Document document, int i) throws Exception {
-        Paragraph paraAns = new Paragraph("Answers for " + (i + 1), headingFont);
+        Paragraph paraAns = new Paragraph("Options of question " + (i + 1), headingFont);
         paraAns.setSpacingAfter(5);
         String optRes = "";
         int c = 1;
