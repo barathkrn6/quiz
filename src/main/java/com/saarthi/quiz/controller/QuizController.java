@@ -2,10 +2,12 @@ package com.saarthi.quiz.controller;
 
 import com.saarthi.quiz.model.db.Quiz;
 import com.saarthi.quiz.model.db.QuizSchedule;
+import com.saarthi.quiz.service.QuestionsService;
 import com.saarthi.quiz.service.QuizService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,5 +74,12 @@ public class QuizController {
                                                   HttpServletResponse response) {
         logger.info("createQuizSchedule at :: " + quizService.getTime());
         return quizService.createQuizSchedule(quizSchedule, response);
+    }
+
+    @GetMapping(value = "/generate_pdf/{quiz_id}")
+    public ResponseEntity<Resource> generatePdf(@PathVariable("quiz_id") Integer quizId, HttpServletResponse response)
+            throws Exception {
+        logger.info("generatePdf at :: " + quizService.getTime());
+        return quizService.generatePdf(quizId, response);
     }
 }
