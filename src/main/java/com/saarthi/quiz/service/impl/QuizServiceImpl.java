@@ -161,7 +161,7 @@ public class QuizServiceImpl implements QuizService {
 
         document.open();
         Font headingFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16, BaseColor.BLACK);
-        Font font = FontFactory.getFont("classpath:static/FreeSans.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+        Font font = FontFactory.getFont("static/FreeSans.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 
         Map<String, Object> data = questionsService.getQuestionsByQuizId(quizId, response);
         if (data != null && !data.isEmpty()) {
