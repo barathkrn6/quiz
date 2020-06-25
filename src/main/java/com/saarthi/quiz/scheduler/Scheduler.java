@@ -21,6 +21,7 @@ import javax.transaction.Transactional;
 import java.net.URI;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -46,7 +47,15 @@ public class Scheduler {
     public void sendQuiz() {
         logger.info("Scheduler triggred");
 
-        QuizSchedule quizScheduled = quizScheduleRepository.getOne(secheduledQuizId);
+        // QuizSchedule quizScheduled = quizScheduleRepository.getOne(secheduledQuizId);
+        java.util.Date dateNow = Calendar.getInstance().getTime();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = df.format(dateNow);
+        java.sql.Date date = java.sql.Date.valueOf(dateStr);
+        QuizSchedule quizScheduled = quizScheduleRepository.getQuizOnDate(date);
+        logger.info("Query for date :: {}", dateStr);
+        logger.info("quizScheduled :: {}", quizScheduled);
+
         logger.info("sendQuiz at :: " + questionsService.getTime());
         String[] splitChat = quizScheduled.getChatId().split("~");
         for (String chatId : splitChat) {
