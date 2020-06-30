@@ -4,6 +4,7 @@ import com.saarthi.quiz.model.db.Quiz;
 import com.saarthi.quiz.model.db.QuizSchedule;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
@@ -24,4 +25,6 @@ public interface QuizService {
     Map<String, Object> createQuizSchedule(QuizSchedule quizSchedule, HttpServletResponse response);
 
     ResponseEntity<Resource> generatePdf(Integer quizId, HttpServletResponse response) throws Exception;
+
+    Map<String, Object> uploadWhatsAppData(String groupName, MultipartFile multipartFile, HttpServletResponse response);
 }

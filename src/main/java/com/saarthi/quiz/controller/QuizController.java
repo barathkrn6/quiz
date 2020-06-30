@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
@@ -81,5 +82,12 @@ public class QuizController {
             throws Exception {
         logger.info("generatePdf at :: " + quizService.getTime());
         return quizService.generatePdf(quizId, response);
+    }
+
+    @PostMapping(value = "/upload/whatsapp_data/{group_name}")
+    public Map<String, Object> uploadWhatsAppData(@PathVariable("group_name") String groupName,
+                                   @RequestParam("file") MultipartFile multipartFile, HttpServletResponse response) {
+        logger.info("uploadWhatsAppData at :: {}", quizService.getTime());
+        return quizService.uploadWhatsAppData(groupName.toUpperCase().trim(), multipartFile, response);
     }
 }
