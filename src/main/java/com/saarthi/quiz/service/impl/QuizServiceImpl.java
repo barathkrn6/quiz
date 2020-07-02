@@ -35,6 +35,7 @@ import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -299,8 +300,8 @@ public class QuizServiceImpl implements QuizService {
                     whatsappData.setPostedBy(object[2].toString().trim());
                     whatsappData.setMessage(object[3].toString().trim());
                     whatsappData.setGroup_name(groupName);
-                    whatsappData.setCreatedAt(LocalDateTime.now());
-                    whatsappData.setUpdatedAt(LocalDateTime.now());
+                    whatsappData.setCreatedAt(LocalDateTime.now(ZoneId.of("Asia/Kolkata")));
+                    whatsappData.setUpdatedAt(LocalDateTime.now(ZoneId.of("Asia/Kolkata")));
                     // System.out.println(object[0] + "\t" + object[1] + "\t" + object[2] + "\t" + object[3] + "\t" +
                     // groupName);
                     WhatsappData result = whatsappDataRepository.save(whatsappData);
@@ -319,57 +320,71 @@ public class QuizServiceImpl implements QuizService {
     }
 
     public boolean startsWithDate(String line) {
-        String datePattern = "^([0-2][0-9]|(3)[0-1])(\\/)(((0)[0-9])|((1)[0-2]))(\\/)(\\d{2}|\\d{4}), ([0-9]{1,2}):([0-9][0-9]) ([AaPp][Mm]) -";
-        Pattern r = Pattern.compile(datePattern);
-        Matcher m = r.matcher(line);
-        return m.find();
+        try {
+            String datePattern = "^([0-2][0-9]|(3)[0-1])(\\/)(((0)[0-9])|((1)[0-2]))(\\/)(\\d{2}|\\d{4}), ([0-9]{1,2}):([0-9][0-9]) ([AaPp][Mm]) -";
+            Pattern r = Pattern.compile(datePattern);
+            Matcher m = r.matcher(line);
+            return m.find();
+        } catch (Exception e) {
+            logger.error("error in startsWithDate :: ", e);
+            return false;
+        }
     }
 
     public Object[] getDataPoint(String line) {
-        String splitLine[] = line.split(" - ", 2);
-        String dateTime = splitLine[0];
+        try {
+            String splitLine[] = line.split(" - ", 2);
+            String dateTime = splitLine[0];
 
-        String date = dateTime.split(", ")[0];
-        String time = dateTime.split(", ")[1];
-        String author = "";
+            String date = dateTime.split(", ")[0];
+            String time = dateTime.split(", ")[1];
+            String author = "";
 
-        String message = splitLine[1].trim();
+            String message = splitLine[1].trim();
 
-        if (startsWithAuthor(message)) {
-            String splitMessage[] = message.split(": ");
-            author = splitMessage[0].trim();
-            message = splitMessage[1].trim();
-        } else {
-            author = "None";
+            if (startsWithAuthor(message)) {
+                String splitMessage[] = message.split(": ");
+                author = splitMessage[0].trim();
+                message = splitMessage[1].trim();
+            } else {
+                author = "None";
+            }
+
+            Object[] object = new Object[4];
+            object[0] = date;
+            object[1] = time;
+            object[2] = author;
+            object[3] = message;
+
+            return object;
+        } catch (Exception e) {
+            logger.error("error in getDataPoint :: ", e);
+            return null;
         }
-
-        Object[] object = new Object[4];
-        object[0] = date;
-        object[1] = time;
-        object[2] = author;
-        object[3] = message;
-
-        return object;
     }
 
     public boolean startsWithAuthor(String message) {
-        List<String> patterns = new ArrayList<>();
-        patterns.add("([\\w]+):");
-        patterns.add("([\\w]+[\\s]+[\\w]+):");
-        patterns.add("([\\w]+[\\s]+[\\w]+[\\s]+[\\w]+):");
-        patterns.add("([+]\\d{2} \\d{5} \\d{5}):");
-        patterns.add("([+]\\d{2} \\d{4} \\d{3} \\d{3}):");
+        try {
+            List<String> patterns = new ArrayList<>();
+            patterns.add("([\\w]+):");
+            patterns.add("([\\w]+[\\s]+[\\w]+):");
+            patterns.add("([\\w]+[\\s]+[\\w]+[\\s]+[\\w]+):");
+            patterns.add("([+]\\d{2} \\d{5} \\d{5}):");
+            patterns.add("([+]\\d{2} \\d{4} \\d{3} \\d{3}):");
 
-        String pattern = "^";
-        for (String p : patterns) {
-            pattern = pattern + p + "|";
+            String pattern = "^";
+            for (String p : patterns) {
+                pattern = pattern + p + "|";
+            }
+            pattern = pattern.substring(0, pattern.length() - 1);
+
+            Pattern r = Pattern.compile(pattern);
+            Matcher m = r.matcher(message);
+
+            return m.find();
+        } catch (Exception e) {
+            logger.error("error in startsWithAuthor :: ", e);
         }
-        pattern = pattern.substring(0, pattern.length() - 1);
-
-        Pattern r = Pattern.compile(pattern);
-        Matcher m = r.matcher(message);
-
-        return m.find();
     }
 
     public void addQuestions(Font headingFont, String questionStr, Font font, Document document, int i) throws Exception {
