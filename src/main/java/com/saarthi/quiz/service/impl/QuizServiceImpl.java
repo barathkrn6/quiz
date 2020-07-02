@@ -280,6 +280,7 @@ public class QuizServiceImpl implements QuizService {
             System.out.println(list.size());
 
             List<Integer> createdId = new ArrayList<>();
+            Set<WhatsappData> setWhatsappData = new LinkedHashSet<>();
             for (Object[] object : list) {
                 try {
                     WhatsappData whatsappData = new WhatsappData();
@@ -304,11 +305,14 @@ public class QuizServiceImpl implements QuizService {
                     whatsappData.setUpdatedAt(LocalDateTime.now(ZoneId.of("Asia/Kolkata")));
                     // System.out.println(object[0] + "\t" + object[1] + "\t" + object[2] + "\t" + object[3] + "\t" +
                     // groupName);
-                    WhatsappData result = whatsappDataRepository.save(whatsappData);
-                    createdId.add(result.getId());
+                    setWhatsappData.add(whatsappData);
                 } catch (Exception e) {
                     logger.error("error in loop :: {}", e);
                 }
+            }
+            List<WhatsappData> res = whatsappDataRepository.saveAll(setWhatsappData);
+            for (WhatsappData r : res) {
+                createdId.add(r.getId());
             }
             Map<String, Object> map = new HashMap<>();
             map.put("created_ids", createdId);
@@ -384,6 +388,7 @@ public class QuizServiceImpl implements QuizService {
             return m.find();
         } catch (Exception e) {
             logger.error("error in startsWithAuthor :: ", e);
+            return false;
         }
     }
 

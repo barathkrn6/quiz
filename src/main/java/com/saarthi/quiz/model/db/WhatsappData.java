@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "whatsapp_data")
@@ -105,5 +106,22 @@ public class WhatsappData {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WhatsappData that = (WhatsappData) o;
+        return datePosted.equals(that.datePosted) &&
+                timePosted.equals(that.timePosted) &&
+                postedBy.equals(that.postedBy) &&
+                message.equals(that.message) &&
+                group_name.equals(that.group_name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(datePosted, timePosted, postedBy, message, group_name);
     }
 }
