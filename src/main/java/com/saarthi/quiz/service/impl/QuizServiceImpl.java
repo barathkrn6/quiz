@@ -326,7 +326,7 @@ public class QuizServiceImpl implements QuizService {
     }
 
     public Object[] getDataPoint(String line) {
-        String splitLine[] = line.split(" - ");
+        String splitLine[] = line.split(" - ", 2);
         String dateTime = splitLine[0];
 
         String date = dateTime.split(", ")[0];
