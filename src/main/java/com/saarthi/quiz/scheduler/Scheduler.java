@@ -63,8 +63,8 @@ public class Scheduler {
         }
     }
 
-    @Scheduled(cron = "${morning.ten.am.quiz.alert:0 45 13 * * ?}")
-    @Transactional
+    // @Scheduled(cron = "${morning.ten.am.quiz.alert:0 45 13 * * ?}")
+    // @Transactional
     public void sendAlert() throws Exception {
         logger.info("Scheduler triggred alert");
 
@@ -76,7 +76,7 @@ public class Scheduler {
         }
     }
 
-    @Scheduled(fixedRate = 600000)
+    // @Scheduled(fixedRate = 600000)
     public void healthCheck() throws Exception {
         logger.info("Scheduler healthCheck");
         Date localTime = new Date();
