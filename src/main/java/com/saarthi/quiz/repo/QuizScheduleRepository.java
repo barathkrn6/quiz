@@ -12,6 +12,6 @@ import java.sql.Date;
  */
 public interface QuizScheduleRepository extends JpaRepository<QuizSchedule, Integer> {
 
-    @Query("SELECT c FROM QuizSchedule c where c.scheduledDate = :scheduled_date")
-    QuizSchedule getQuizOnDate(@Param("scheduled_date") Date scheduledDate);
+    @Query("SELECT c FROM QuizSchedule c where c.scheduledDate = :scheduled_date and c.name = :name")
+    QuizSchedule getQuizOnDate(@Param("scheduled_date") Date scheduledDate, @Param("name") String name);
 }

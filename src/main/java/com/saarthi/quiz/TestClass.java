@@ -20,11 +20,17 @@ public class TestClass {
         map.put("b", 1);
         map.put("c", 2);
         map.put("d", 3);
+        PrintStream o = new PrintStream(new File("/Users/barath.karunakaran/Desktop/output.txt"));
+
+        // Store current System.out before assigning a new value
+        PrintStream console = System.out;
+        System.setOut(o);
         // readFile(new File("/Users/barath.karunakaran/Downloads/Mix_30_que.csv"));
         // readFile(new File("/Users/barath.karunakaran/Documents/Saarathi/questions/100_que.csv"));
-        Set<String> set = readFile1();
-        readFile(set);
+        // Set<String> set = readFile1();
+        readFile();
         // System.out.println(new TestClass().createQuiz(10000));
+        System.out.println("done");
     }
 
     public static Set<String> readFile1() throws Exception {
@@ -39,28 +45,28 @@ public class TestClass {
         return set;
     }
 
-    public static void readFile(Set<String> set) throws Exception {
-        CSVReader reader = new CSVReader(new FileReader("/Users/barath.karunakaran/Documents/Saarathi/questions/hindi" +
-                ".csv"));
+    public static void readFile() throws Exception {
+        CSVReader reader = new CSVReader(new FileReader("/Users/barath.karunakaran/Desktop/10Sep.csv"));
         String[] splitLine;
         int count = 0;
-        int quizId = 100;
+        int quizId = 200;
         String quizResponse = createQuiz(quizId);
         JSONObject quizObj = new JSONObject(quizResponse);
         Integer quizIdd = quizObj.getInt("id");
 
         while ((splitLine = reader.readNext()) != null) {
-            // System.out.println();
-            String id = splitLine[0];
-            String name = splitLine[1].replaceAll("\"", "").trim();
-            String options = splitLine[2].replaceAll("\"", "").replaceAll(",", " ").trim() + "," +
-                    splitLine[3].replaceAll("\"", "").replaceAll(",", " ").trim() + "," +
-                    splitLine[4].replaceAll("\"", "").replaceAll(",", " ").trim() + "," +
-                    splitLine[5].replaceAll("\"", "").replaceAll(",", " ").trim();
-            String explanation = splitLine[6].replaceAll("\"", "").trim();
-            Integer option = map.get(splitLine[7].replaceAll("\"", "").trim().toLowerCase());
+            try {
+                // System.out.println();
+                String id = splitLine[0];
+                String name = splitLine[1].replaceAll("\"", "").trim();
+                String options = splitLine[2].replaceAll("\"", "").replaceAll(",", " ").trim() + "," +
+                        splitLine[3].replaceAll("\"", "").replaceAll(",", " ").trim() + "," +
+                        splitLine[4].replaceAll("\"", "").replaceAll(",", " ").trim() + "," +
+                        splitLine[5].replaceAll("\"", "").replaceAll(",", " ").trim();
+                String explanation = splitLine[6].replaceAll("\"", "").trim();
+                Integer option = map.get(splitLine[7].replaceAll("\"", "").trim().toLowerCase());
 
-            if (!set.contains(id)) {
+                // if (!set.contains(id)) {
                 if (option != null) {
                     count++;
                     System.out.println(id);
@@ -104,6 +110,9 @@ public class TestClass {
                     System.out.println("POST Response Code :: " + responseCode);*/
 
                 }
+                // }
+            } catch (Exception e) {
+
             }
         }
     }

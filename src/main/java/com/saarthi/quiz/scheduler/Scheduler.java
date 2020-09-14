@@ -42,7 +42,7 @@ public class Scheduler {
     @Value("${morning.ten.am.quiz_id}")
     private Integer secheduledQuizId;
 
-    @Scheduled(cron = "${morning.ten.am.quiz:0 0 14 * * ?}")
+    @Scheduled(cron = "${morning.ten.am.quiz:0 30 6 * * ?}")
     @Transactional
     public void sendQuiz() {
         logger.info("Scheduler triggred");
@@ -52,8 +52,53 @@ public class Scheduler {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String dateStr = df.format(dateNow);
         java.sql.Date date = java.sql.Date.valueOf(dateStr);
-        QuizSchedule quizScheduled = quizScheduleRepository.getQuizOnDate(date);
+        QuizSchedule quizScheduled = quizScheduleRepository.getQuizOnDate(date, "12-pm-test");
         logger.info("Query for date :: {}", dateStr);
+        logger.info("Query for name :: {}", "12-pm-test");
+        logger.info("quizScheduled :: {}", quizScheduled);
+
+        logger.info("sendQuiz at :: " + questionsService.getTime());
+        String[] splitChat = quizScheduled.getChatId().split("~");
+        for (String chatId : splitChat) {
+            asyncServiceImpl.sendQuiz(chatId, quizScheduled.getToken(), quizScheduled.getQuizId(), null);
+        }
+    }
+
+    @Scheduled(cron = "${morning.ten.am.quiz:0 30 8 * * ?}")
+    @Transactional
+    public void sendQuiz1() {
+        logger.info("Scheduler triggred");
+
+        // QuizSchedule quizScheduled = quizScheduleRepository.getOne(secheduledQuizId);
+        java.util.Date dateNow = Calendar.getInstance().getTime();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = df.format(dateNow);
+        java.sql.Date date = java.sql.Date.valueOf(dateStr);
+        QuizSchedule quizScheduled = quizScheduleRepository.getQuizOnDate(date, "2-pm-test");
+        logger.info("Query for date :: {}", dateStr);
+        logger.info("Query for name :: {}", "2-pm-test");
+        logger.info("quizScheduled :: {}", quizScheduled);
+
+        logger.info("sendQuiz at :: " + questionsService.getTime());
+        String[] splitChat = quizScheduled.getChatId().split("~");
+        for (String chatId : splitChat) {
+            asyncServiceImpl.sendQuiz(chatId, quizScheduled.getToken(), quizScheduled.getQuizId(), null);
+        }
+    }
+
+    @Scheduled(cron = "${morning.ten.am.quiz:0 30 10 * * ?}")
+    @Transactional
+    public void sendQuiz2() {
+        logger.info("Scheduler triggred");
+
+        // QuizSchedule quizScheduled = quizScheduleRepository.getOne(secheduledQuizId);
+        java.util.Date dateNow = Calendar.getInstance().getTime();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = df.format(dateNow);
+        java.sql.Date date = java.sql.Date.valueOf(dateStr);
+        QuizSchedule quizScheduled = quizScheduleRepository.getQuizOnDate(date, "4-pm-test");
+        logger.info("Query for date :: {}", dateStr);
+        logger.info("Query for name :: {}", "4-pm-test");
         logger.info("quizScheduled :: {}", quizScheduled);
 
         logger.info("sendQuiz at :: " + questionsService.getTime());

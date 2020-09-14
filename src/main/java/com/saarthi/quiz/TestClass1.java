@@ -19,7 +19,7 @@ public class TestClass1 {
                 } else if (data.contains("correct_option")) {
                     JSONObject obj = new JSONObject(data);
                     String fileName = obj.get("quiz_id").toString();
-                    new TestClass1().writeContent("/Users/barath.karunakaran/Documents/Saarathi/newquest/" + fileName + ".txt", data);
+                    new TestClass1().writeContent("/Users/barath.karunakaran/Documents/Saarathi/newquest1/" + fileName + ".txt", data);
                 }
 
             }
