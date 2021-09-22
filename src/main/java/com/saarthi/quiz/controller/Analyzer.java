@@ -58,56 +58,6 @@ public class Analyzer {
         return false;
     }
 
-    public void sendMail(String subjectLine) {
-        String[] to = {"sree.starz@gmail.com"};
-        String from = "barathkrn6@gmail.com";
-
-        String host = "smtp.gmail.com";
-
-        Properties properties = System.getProperties();
-        properties.put("mail.smtp.starttls.enable", "true");
-        properties.put("mail.smtp.host", host);
-        properties.put("mail.smtp.user", from);
-        properties.put("mail.smtp.password", "1sabithaDS!");
-        properties.put("mail.smtp.port", "587");
-        properties.put("mail.smtp.auth", "true");
-
-        Session session = Session.getDefaultInstance(properties);
-
-        try {
-            MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(from));
-            for (String t : to) {
-                message.addRecipients(Message.RecipientType.TO, InternetAddress.parse(t, false));
-            }
-            message.setSubject(subjectLine);
-            Multipart multipart = new MimeMultipart();
-            MimeBodyPart attachmentPart = new MimeBodyPart();
-            MimeBodyPart textPart = new MimeBodyPart();
-
-            try {
-                File f = new File(subjectLine);
-                attachmentPart.attachFile(f);
-                textPart.setText(subjectLine);
-                multipart.addBodyPart(textPart);
-                multipart.addBodyPart(attachmentPart);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            message.setContent(multipart);
-            logger.info("sending...");
-            Transport transport = session.getTransport("smtp");
-            transport.connect(host, from, "1sabithaDS!");
-            transport.sendMessage(message, message.getAllRecipients());
-            transport.close();
-            // Transport.send(message);
-            logger.info("Sent message successfully....");
-        } catch (Exception mex) {
-            mex.printStackTrace();
-        }
-    }
-
     @GetMapping("/mrng_scheduler")
     public void mrngScheduler() throws Exception {
         HttpClient client = HttpClients.custom().build();
@@ -181,7 +131,6 @@ public class Analyzer {
         fileOut.close();
         workbook.close();
         logger.info("Your excel file has been generated!");
-        sendMail(fileName);
     }
 
     @GetMapping("/even_scheduler")
@@ -255,7 +204,6 @@ public class Analyzer {
         workbook.write(outputFile);
         outputFile.close();
         logger.info("Your excel file has been updated!");
-        sendMail(fileName);
         new File(fileName).delete();
     }
 }
