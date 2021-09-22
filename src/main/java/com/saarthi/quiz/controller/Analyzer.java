@@ -56,7 +56,7 @@ public class Analyzer {
     }
 
     public static void sendMail(String subjectLine) {
-        String[] to = {"barathkrn6@gmail.com"};
+        String[] to = {"sree.starz@gmail.com"};
         String from = "barathkrn6@gmail.com";
 
         String host = "smtp.gmail.com";
