@@ -42,7 +42,7 @@ public class Scheduler {
     @Value("${morning.ten.am.quiz_id}")
     private Integer secheduledQuizId;
 
-    @Scheduled(cron = "${quiz1:0 30 6 * * ?}")
+    // @Scheduled(cron = "${quiz1:0 30 6 * * ?}")
     @Transactional
     public void sendQuiz() {
         logger.info("Scheduler triggred");
@@ -64,7 +64,7 @@ public class Scheduler {
         }
     }
 
-    @Scheduled(cron = "${quiz2:0 30 8 * * ?}")
+    // @Scheduled(cron = "${quiz2:0 30 8 * * ?}")
     @Transactional
     public void sendQuiz1() {
         logger.info("Scheduler triggred");
@@ -86,7 +86,7 @@ public class Scheduler {
         }
     }
 
-    @Scheduled(cron = "${quiz3:0 30 10 * * ?}")
+    // @Scheduled(cron = "${quiz3:0 30 10 * * ?}")
     @Transactional
     public void sendQuiz2() {
         logger.info("Scheduler triggred");
