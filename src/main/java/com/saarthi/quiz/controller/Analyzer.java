@@ -16,6 +16,8 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,6 +41,7 @@ import java.util.Properties;
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class Analyzer {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public static void setStyle(Row row, XSSFCellStyle style) {
         row.getCell(0).setCellStyle(style);
@@ -55,7 +58,7 @@ public class Analyzer {
         return false;
     }
 
-    public static void sendMail(String subjectLine) {
+    public void sendMail(String subjectLine) {
         String[] to = {"sree.starz@gmail.com"};
         String from = "barathkrn6@gmail.com";
 
@@ -93,13 +96,13 @@ public class Analyzer {
             }
 
             message.setContent(multipart);
-            System.out.println("sending...");
+            logger.info("sending...");
             Transport transport = session.getTransport("smtp");
             transport.connect(host, from, "1sabithaDS!");
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
             // Transport.send(message);
-            System.out.println("Sent message successfully....");
+            logger.info("Sent message successfully....");
         } catch (Exception mex) {
             mex.printStackTrace();
         }
@@ -177,7 +180,7 @@ public class Analyzer {
         workbook.write(fileOut);
         fileOut.close();
         workbook.close();
-        System.out.println("Your excel file has been generated!");
+        logger.info("Your excel file has been generated!");
         sendMail(fileName);
     }
 
@@ -251,7 +254,7 @@ public class Analyzer {
         FileOutputStream outputFile = new FileOutputStream(new File(fileName));
         workbook.write(outputFile);
         outputFile.close();
-        System.out.println("Your excel file has been updated!");
+        logger.info("Your excel file has been updated!");
         sendMail(fileName);
         new File(fileName).delete();
     }
