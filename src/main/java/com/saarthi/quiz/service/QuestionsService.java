@@ -23,5 +23,5 @@ public interface QuestionsService {
     Map<String, Object> telegramWebhook(String telegramToken, Map<String, Object> requestBody,
                                         HttpServletResponse response);
 
-    void sendQuizAlert(String chatId, String token) throws Exception;
+    void sendQuizAlert(String chatId, String token, String message) throws Exception;
 }

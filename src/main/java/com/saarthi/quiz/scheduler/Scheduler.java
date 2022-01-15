@@ -64,6 +64,56 @@ public class Scheduler {
         }
     }
 
+    @Scheduled(cron = "${quizAlert1:0 25 6 * * ?}")
+    @Transactional
+    public void sendAlertEn() throws Exception {
+        logger.info("Scheduler triggred alert");
+
+        java.util.Date dateNow = Calendar.getInstance().getTime();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = df.format(dateNow);
+        java.sql.Date date = java.sql.Date.valueOf(dateStr);
+        QuizSchedule quizScheduled = quizScheduleRepository.getQuizOnDate(date, "12-pm-test");
+        logger.info("Query for date :: {}", dateStr);
+        logger.info("Query for name :: {}", "12-pm-test");
+        logger.info("quizScheduled :: {}", quizScheduled);
+
+        String message = "\uD83D\uDC49Saarthi App Quiz Alert \uD83D\uDC48\n" +
+                "Time: 12 pm\n" +
+                "Subject: General Awareness";
+
+        logger.info("sendQuiz at :: " + questionsService.getTime());
+        String[] splitChat = quizScheduled.getChatId().split("~");
+        for (String chatId : splitChat) {
+            questionsService.sendQuizAlert(chatId, quizScheduled.getToken(), message);
+        }
+    }
+
+    @Scheduled(cron = "${quizAlert1:0 25 6 * * ?}")
+    @Transactional
+    public void sendAlertHi() throws Exception {
+        logger.info("Scheduler triggred alert");
+
+        java.util.Date dateNow = Calendar.getInstance().getTime();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = df.format(dateNow);
+        java.sql.Date date = java.sql.Date.valueOf(dateStr);
+        QuizSchedule quizScheduled = quizScheduleRepository.getQuizOnDate(date, "12-pm-test");
+        logger.info("Query for date :: {}", dateStr);
+        logger.info("Query for name :: {}", "12-pm-test");
+        logger.info("quizScheduled :: {}", quizScheduled);
+
+        String message = "\uD83D\uDC49सारथी ऐप क्विज़ अलर्ट \uD83D\uDC48\n" +
+                "समय: दोपहर 12 बजे\n" +
+                "विषय: सामान्य जागरूकता";
+
+        logger.info("sendQuiz at :: " + questionsService.getTime());
+        String[] splitChat = quizScheduled.getChatId().split("~");
+        for (String chatId : splitChat) {
+            questionsService.sendQuizAlert(chatId, quizScheduled.getToken(), message);
+        }
+    }
+
     @Scheduled(cron = "${quiz2:0 30 8 * * ?}")
     @Transactional
     public void sendQuiz1() {
@@ -83,6 +133,56 @@ public class Scheduler {
         String[] splitChat = quizScheduled.getChatId().split("~");
         for (String chatId : splitChat) {
             asyncServiceImpl.sendQuiz(chatId, quizScheduled.getToken(), quizScheduled.getQuizId(), null);
+        }
+    }
+
+    @Scheduled(cron = "${quizAlert2:0 25 8 * * ?}")
+    @Transactional
+    public void sendAlertEn1() throws Exception {
+        logger.info("Scheduler triggred alert");
+
+        java.util.Date dateNow = Calendar.getInstance().getTime();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = df.format(dateNow);
+        java.sql.Date date = java.sql.Date.valueOf(dateStr);
+        QuizSchedule quizScheduled = quizScheduleRepository.getQuizOnDate(date, "2-pm-test");
+        logger.info("Query for date :: {}", dateStr);
+        logger.info("Query for name :: {}", "2-pm-test");
+        logger.info("quizScheduled :: {}", quizScheduled);
+
+        String message = "\uD83D\uDC49Saarthi App Quiz Alert \uD83D\uDC48\n" +
+                "Time: 2 pm\n" +
+                "Subject: General Awareness";
+
+        logger.info("sendQuiz at :: " + questionsService.getTime());
+        String[] splitChat = quizScheduled.getChatId().split("~");
+        for (String chatId : splitChat) {
+            questionsService.sendQuizAlert(chatId, quizScheduled.getToken(), message);
+        }
+    }
+
+    @Scheduled(cron = "${quizAlert2:0 25 8 * * ?}")
+    @Transactional
+    public void sendAlertHi1() throws Exception {
+        logger.info("Scheduler triggred alert");
+
+        java.util.Date dateNow = Calendar.getInstance().getTime();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = df.format(dateNow);
+        java.sql.Date date = java.sql.Date.valueOf(dateStr);
+        QuizSchedule quizScheduled = quizScheduleRepository.getQuizOnDate(date, "2-pm-test");
+        logger.info("Query for date :: {}", dateStr);
+        logger.info("Query for name :: {}", "2-pm-test");
+        logger.info("quizScheduled :: {}", quizScheduled);
+
+        String message = "\uD83D\uDC49सारथी ऐप क्विज़ अलर्ट \uD83D\uDC48\n" +
+                "समय: दोपहर 2 बजे\n" +
+                "विषय: सामान्य जागरूकता";
+
+        logger.info("sendQuiz at :: " + questionsService.getTime());
+        String[] splitChat = quizScheduled.getChatId().split("~");
+        for (String chatId : splitChat) {
+            questionsService.sendQuizAlert(chatId, quizScheduled.getToken(), message);
         }
     }
 
@@ -108,18 +208,68 @@ public class Scheduler {
         }
     }
 
+    @Scheduled(cron = "${quizAlert3:0 25 10 * * ?}")
+    @Transactional
+    public void sendAlertEn2() throws Exception {
+        logger.info("Scheduler triggred alert");
+
+        java.util.Date dateNow = Calendar.getInstance().getTime();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = df.format(dateNow);
+        java.sql.Date date = java.sql.Date.valueOf(dateStr);
+        QuizSchedule quizScheduled = quizScheduleRepository.getQuizOnDate(date, "4-pm-test");
+        logger.info("Query for date :: {}", dateStr);
+        logger.info("Query for name :: {}", "4-pm-test");
+        logger.info("quizScheduled :: {}", quizScheduled);
+
+        String message = "\uD83D\uDC49Saarthi App Quiz Alert \uD83D\uDC48\n" +
+                "Time: 4 pm\n" +
+                "Subject: General Awareness";
+
+        logger.info("sendQuiz at :: " + questionsService.getTime());
+        String[] splitChat = quizScheduled.getChatId().split("~");
+        for (String chatId : splitChat) {
+            questionsService.sendQuizAlert(chatId, quizScheduled.getToken(), message);
+        }
+    }
+
+    @Scheduled(cron = "${quizAlert3:0 25 10 * * ?}")
+    @Transactional
+    public void sendAlertHi2() throws Exception {
+        logger.info("Scheduler triggred alert");
+
+        java.util.Date dateNow = Calendar.getInstance().getTime();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = df.format(dateNow);
+        java.sql.Date date = java.sql.Date.valueOf(dateStr);
+        QuizSchedule quizScheduled = quizScheduleRepository.getQuizOnDate(date, "4-pm-test");
+        logger.info("Query for date :: {}", dateStr);
+        logger.info("Query for name :: {}", "4-pm-test");
+        logger.info("quizScheduled :: {}", quizScheduled);
+
+        String message = "\uD83D\uDC49सारथी ऐप क्विज़ अलर्ट \uD83D\uDC48\n" +
+                "समय: दोपहर 4 बजे\n" +
+                "विषय: सामान्य जागरूकता";
+
+        logger.info("sendQuiz at :: " + questionsService.getTime());
+        String[] splitChat = quizScheduled.getChatId().split("~");
+        for (String chatId : splitChat) {
+            questionsService.sendQuizAlert(chatId, quizScheduled.getToken(), message);
+        }
+    }
+
     // @Scheduled(cron = "${morning.ten.am.quiz.alert:0 45 13 * * ?}")
     // @Transactional
-    public void sendAlert() throws Exception {
+    /*public void sendAlert() throws Exception {
         logger.info("Scheduler triggred alert");
 
         QuizSchedule quizScheduled = quizScheduleRepository.getOne(secheduledQuizId);
         logger.info("sendQuiz at :: " + questionsService.getTime());
         String[] splitChat = quizScheduled.getChatId().split("~");
         for (String chatId : splitChat) {
-            questionsService.sendQuizAlert(chatId, quizScheduled.getToken());
+            questionsService.sendQuizAlert(chatId, quizScheduled.getToken(), "");
         }
-    }
+    }*/
 
     @Scheduled(fixedRate = 600000)
     public void healthCheck() throws Exception {

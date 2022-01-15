@@ -225,7 +225,7 @@ public class QuestionsServiceImpl implements QuestionsService {
     }
 
     @Override
-    public void sendQuizAlert(String chatId, String telegramToken) throws Exception {
+    public void sendQuizAlert(String chatId, String telegramToken, String message) throws Exception {
         RestTemplate restTemplate = new RestTemplate();
         final String baseUrl = "https://api.telegram.org/bot" + telegramToken + "/sendMessage";
         logger.info("baseUrl sendQuizAlert :: {}", baseUrl);
@@ -235,11 +235,12 @@ public class QuestionsServiceImpl implements QuestionsService {
         ObjectMapper mapperObj = new ObjectMapper();
         Map<String, Object> postObject = new HashMap<>();
         postObject.put("chat_id", chatId);
-        postObject.put("text", "!!AAJ KA CONTEST HOGA CURRENT AFFAIRS KA !!\n" +
+        /*postObject.put("text", "!!AAJ KA CONTEST HOGA CURRENT AFFAIRS KA !!\n" +
                 "TIMING : 7.30PM\n" +
                 "SUBJECT : GENERAL KNOWLEDGE\n" +
                 "TOPIC : CURRENT AFFAIRS\n" +
-                "TEACHER: SAUMYA MAM");
+                "TEACHER: SAUMYA MAM");*/
+        postObject.put("text", message);
         String jsonReq = mapperObj.writeValueAsString(postObject);
         HttpEntity<String> request = new HttpEntity<String>(jsonReq, headers);
 
