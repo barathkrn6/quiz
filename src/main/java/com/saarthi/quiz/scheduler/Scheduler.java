@@ -82,7 +82,7 @@ public class Scheduler {
                 "Time: 12 pm\n" +
                 "Subject: General Awareness";
 
-        logger.info("sendQuiz at :: " + questionsService.getTime());
+        logger.info("sendAlertEn at :: " + questionsService.getTime());
         String[] splitChat = quizScheduled.getChatId().split("~");
         for (String chatId : splitChat) {
             questionsService.sendQuizAlert(chatId, quizScheduled.getToken(), message);
@@ -107,7 +107,7 @@ public class Scheduler {
                 "समय: दोपहर 12 बजे\n" +
                 "विषय: सामान्य जागरूकता";
 
-        logger.info("sendQuiz at :: " + questionsService.getTime());
+        logger.info("sendAlertHi at :: " + questionsService.getTime());
         String[] splitChat = quizScheduled.getChatId().split("~");
         for (String chatId : splitChat) {
             questionsService.sendQuizAlert(chatId, quizScheduled.getToken(), message);
@@ -154,7 +154,7 @@ public class Scheduler {
                 "Time: 2 pm\n" +
                 "Subject: General Awareness";
 
-        logger.info("sendQuiz at :: " + questionsService.getTime());
+        logger.info("sendAlertEn1 at :: " + questionsService.getTime());
         String[] splitChat = quizScheduled.getChatId().split("~");
         for (String chatId : splitChat) {
             questionsService.sendQuizAlert(chatId, quizScheduled.getToken(), message);
@@ -179,7 +179,7 @@ public class Scheduler {
                 "समय: दोपहर 2 बजे\n" +
                 "विषय: सामान्य जागरूकता";
 
-        logger.info("sendQuiz at :: " + questionsService.getTime());
+        logger.info("sendAlertHi1 at :: " + questionsService.getTime());
         String[] splitChat = quizScheduled.getChatId().split("~");
         for (String chatId : splitChat) {
             questionsService.sendQuizAlert(chatId, quizScheduled.getToken(), message);
@@ -226,7 +226,7 @@ public class Scheduler {
                 "Time: 4 pm\n" +
                 "Subject: General Awareness";
 
-        logger.info("sendQuiz at :: " + questionsService.getTime());
+        logger.info("sendAlertEn2 at :: " + questionsService.getTime());
         String[] splitChat = quizScheduled.getChatId().split("~");
         for (String chatId : splitChat) {
             questionsService.sendQuizAlert(chatId, quizScheduled.getToken(), message);
@@ -251,7 +251,7 @@ public class Scheduler {
                 "समय: दोपहर 4 बजे\n" +
                 "विषय: सामान्य जागरूकता";
 
-        logger.info("sendQuiz at :: " + questionsService.getTime());
+        logger.info("sendAlertHi2 at :: " + questionsService.getTime());
         String[] splitChat = quizScheduled.getChatId().split("~");
         for (String chatId : splitChat) {
             questionsService.sendQuizAlert(chatId, quizScheduled.getToken(), message);
