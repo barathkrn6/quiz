@@ -247,10 +247,10 @@ public class QuestionsServiceImpl implements QuestionsService {
 
         ResponseEntity<String> responseEntityStr = restTemplate.postForEntity(uri, request, String.class);*/
 
-        final String baseUrl = "https://api.telegram.org/bot" + telegramToken + "/sendMessage?chat_id=" + chatId + "&text=" + message;
+        String encodedurl = URLEncoder.encode(message,"UTF-8");
+        String baseUrl = "https://api.telegram.org/bot" + telegramToken + "/sendMessage?chat_id=" + chatId + "&text=" + encodedurl;
         logger.info("baseUrl sendQuizAlert :: {}", baseUrl);
-        String encodedurl = URLEncoder.encode(baseUrl,"UTF-8");
-        URI uri = new URI(encodedurl);
+        URI uri = new URI(baseUrl);
         logger.info("uri sendQuizAlert :: {}", uri);
         ResponseEntity<String> responseEntityStr = restTemplate.getForEntity(uri, String.class);
         logger.info("Posted alert response makePostCall :: {}", responseEntityStr.getBody());
