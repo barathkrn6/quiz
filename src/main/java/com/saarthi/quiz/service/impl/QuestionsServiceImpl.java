@@ -23,6 +23,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -227,7 +228,7 @@ public class QuestionsServiceImpl implements QuestionsService {
     @Override
     public void sendQuizAlert(String chatId, String telegramToken, String message) throws Exception {
         RestTemplate restTemplate = new RestTemplate();
-        final String baseUrl = "https://api.telegram.org/bot" + telegramToken + "/sendMessage";
+        /*final String baseUrl = "https://api.telegram.org/bot" + telegramToken + "/sendMessage";
         logger.info("baseUrl sendQuizAlert :: {}", baseUrl);
         URI uri = new URI(baseUrl);
         HttpHeaders headers = new HttpHeaders();
@@ -235,16 +236,23 @@ public class QuestionsServiceImpl implements QuestionsService {
         ObjectMapper mapperObj = new ObjectMapper();
         Map<String, Object> postObject = new HashMap<>();
         postObject.put("chat_id", chatId);
-        /*postObject.put("text", "!!AAJ KA CONTEST HOGA CURRENT AFFAIRS KA !!\n" +
+        postObject.put("text", "!!AAJ KA CONTEST HOGA CURRENT AFFAIRS KA !!\n" +
                 "TIMING : 7.30PM\n" +
                 "SUBJECT : GENERAL KNOWLEDGE\n" +
                 "TOPIC : CURRENT AFFAIRS\n" +
-                "TEACHER: SAUMYA MAM");*/
+                "TEACHER: SAUMYA MAM");
         postObject.put("text", message);
         String jsonReq = mapperObj.writeValueAsString(postObject);
         HttpEntity<String> request = new HttpEntity<String>(jsonReq, headers);
 
-        ResponseEntity<String> responseEntityStr = restTemplate.postForEntity(uri, request, String.class);
+        ResponseEntity<String> responseEntityStr = restTemplate.postForEntity(uri, request, String.class);*/
+
+        final String baseUrl = "https://api.telegram.org/bot" + telegramToken + "/sendMessage?chat_id=" + chatId + "&text=" + message;
+        logger.info("baseUrl sendQuizAlert :: {}", baseUrl);
+        String encodedurl = URLEncoder.encode(baseUrl,"UTF-8");
+        URI uri = new URI(encodedurl);
+        logger.info("uri sendQuizAlert :: {}", uri);
+        ResponseEntity<String> responseEntityStr = restTemplate.getForEntity(uri, String.class);
         logger.info("Posted alert response makePostCall :: {}", responseEntityStr.getBody());
     }
 
